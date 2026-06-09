@@ -77,7 +77,7 @@ export function ReferralsPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="px-6 pt-6 pb-8 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -97,7 +97,7 @@ export function ReferralsPage() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-4 gap-4">
-        <div className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer">
+        <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer">
           <div className="flex items-center justify-between mb-3">
             <Users className="w-4 h-4 text-muted-foreground" />
             <TrendingUp className="w-3 h-3 text-green-500" />
@@ -106,7 +106,7 @@ export function ReferralsPage() {
           <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Total Referrals</div>
         </div>
 
-        <div className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer">
+        <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer">
           <div className="flex items-center justify-between mb-3">
             <Clock className="w-4 h-4 text-muted-foreground" />
           </div>
@@ -114,7 +114,7 @@ export function ReferralsPage() {
           <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Pending Review</div>
         </div>
 
-        <div className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer">
+        <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer">
           <div className="flex items-center justify-between mb-3">
             <Users className="w-4 h-4 text-muted-foreground" />
           </div>
@@ -122,7 +122,7 @@ export function ReferralsPage() {
           <div className="text-[10px] text-muted-foreground uppercase tracking-wide">In Interviews</div>
         </div>
 
-        <div className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer">
+        <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer">
           <div className="flex items-center justify-between mb-3">
             <CheckCircle2 className="w-4 h-4 text-green-500" />
           </div>
@@ -184,7 +184,7 @@ export function ReferralsPage() {
             {filteredReferrals.map((candidate) => (
               <div
                 key={candidate.id}
-                className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer"
+                className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div>
@@ -225,7 +225,7 @@ export function ReferralsPage() {
 
         {/* Top Referrers */}
         <div className="space-y-4">
-          <div className="p-5 rounded-xl border border-border bg-card">
+          <div className="p-5 rounded-lg border border-border bg-card">
             <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
               <Award className="w-4 h-4 text-muted-foreground" />
               Top Referrers
@@ -262,7 +262,7 @@ export function ReferralsPage() {
             </div>
           </div>
 
-          <div className="p-5 rounded-xl border border-border bg-card">
+          <div className="p-5 rounded-lg border border-border bg-card">
             <h3 className="text-sm font-semibold mb-4">Referral Program</h3>
             <div className="space-y-3 text-xs">
               <div className="p-3 rounded-lg bg-muted/20">

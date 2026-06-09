@@ -34,7 +34,7 @@ export function InterviewsPage() {
   const totalCompleted = mockInterviews.filter(i => i.status === 'completed').length;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="px-6 pt-6 pb-8 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -114,7 +114,7 @@ export function InterviewsPage() {
               Upcoming Interviews ({upcomingInterviews.length})
             </h3>
             {upcomingInterviews.length === 0 ? (
-              <div className="p-8 rounded-xl border border-border bg-card flex flex-col items-center justify-center text-muted-foreground">
+              <div className="p-8 rounded-lg border border-border bg-card flex flex-col items-center justify-center text-muted-foreground">
                 <Calendar className="w-8 h-8 mb-2 opacity-30" />
                 <p className="text-sm">No upcoming interviews</p>
               </div>
@@ -135,7 +135,7 @@ export function InterviewsPage() {
               Pending Feedback ({pendingFeedback.length})
             </h3>
             {pendingFeedback.length === 0 ? (
-              <div className="p-8 rounded-xl border border-border bg-card flex flex-col items-center justify-center text-muted-foreground">
+              <div className="p-8 rounded-lg border border-border bg-card flex flex-col items-center justify-center text-muted-foreground">
                 <CheckCircle2 className="w-8 h-8 mb-2 opacity-30" />
                 <p className="text-sm">All interviews have feedback</p>
               </div>
@@ -156,7 +156,7 @@ export function InterviewsPage() {
               Completed Interviews ({completedInterviews.length})
             </h3>
             {completedInterviews.length === 0 ? (
-              <div className="p-8 rounded-xl border border-border bg-card flex flex-col items-center justify-center text-muted-foreground">
+              <div className="p-8 rounded-lg border border-border bg-card flex flex-col items-center justify-center text-muted-foreground">
                 <FileText className="w-8 h-8 mb-2 opacity-30" />
                 <p className="text-sm">No completed interviews</p>
               </div>
@@ -223,7 +223,7 @@ function InterviewCard({ interview }: { interview: Interview }) {
   };
 
   return (
-    <div className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer">
+    <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer">
       {/* Header */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1">

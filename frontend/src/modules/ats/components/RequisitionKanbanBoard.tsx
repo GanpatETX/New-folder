@@ -65,7 +65,7 @@ function Column({
         drop(node);
         columnRef(node);
       }}
-      className={`flex-1 min-w-[270px] bg-muted/[0.08] dark:bg-muted/[0.05] rounded-xl p-5 transition-all duration-300 ${
+      className={`flex-1 min-w-[270px] bg-muted/[0.08] dark:bg-muted/[0.05] rounded-lg p-5 transition-all duration-300 ${
         isOver
           ? 'bg-accent/[0.12] dark:bg-accent/[0.08] ring-2 ring-accent/40 shadow-xl'
           : ''

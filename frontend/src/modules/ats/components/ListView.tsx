@@ -23,7 +23,7 @@ export function ListView({ candidates, onStatusChange: _, onCandidateClick }: Li
   };
 
   return (
-    <div className="bg-card rounded-xl border border-border overflow-hidden">
+    <div className="bg-card rounded-lg border border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-muted/20 border-b border-border">

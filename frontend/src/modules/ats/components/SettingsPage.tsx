@@ -55,7 +55,7 @@ export function SettingsPage() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto px-6 pt-6 pb-8">
         {activeTab === 'recruiters' && <RecruitersSettings />}
         {activeTab === 'departments' && <DepartmentsSettings />}
         {activeTab === 'workflows' && <WorkflowsSettings />}
@@ -79,7 +79,7 @@ function RecruitersSettings() {
         {mockRecruiters.map((recruiter) => (
           <div
             key={recruiter.id}
-            className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-colors"
+            className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -135,7 +135,7 @@ function DepartmentsSettings() {
         {departments.map((dept) => (
           <div
             key={dept.id}
-            className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-colors"
+            className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors"
           >
             <div className="flex items-start justify-between mb-3">
               <div>
@@ -208,7 +208,7 @@ function WorkflowsSettings() {
         {workflows.map((workflow, i) => (
           <div
             key={i}
-            className="p-5 rounded-xl border border-border bg-card"
+            className="p-5 rounded-lg border border-border bg-card"
           >
             <div className="flex items-start justify-between mb-4">
               <div>
@@ -279,7 +279,7 @@ function NotificationsSettings() {
         {notificationSettings.map((setting, i) => (
           <div
             key={i}
-            className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-colors"
+            className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors"
           >
             <div className="flex items-center justify-between">
               <div className="flex-1">
@@ -322,7 +322,7 @@ function AutomationSettings() {
         {automations.map((automation, i) => (
           <div
             key={i}
-            className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-colors"
+            className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors"
           >
             <div className="flex items-center justify-between">
               <div className="flex-1">
@@ -390,7 +390,7 @@ function PermissionsSettings() {
         {roles.map((role, i) => (
           <div
             key={i}
-            className="p-5 rounded-xl border border-border bg-card"
+            className="p-5 rounded-lg border border-border bg-card"
           >
             <div className="flex items-start justify-between mb-3">
               <div>

@@ -72,6 +72,12 @@ export default function MainATSContainer() {
     }
   }, [candidateStageFilter]);
 
+  useEffect(() => {
+    const openNewJobModal = () => setShowNewJobModal(true);
+    window.addEventListener('ats:new-job', openNewJobModal);
+    return () => window.removeEventListener('ats:new-job', openNewJobModal);
+  }, []);
+
   const updateCandidateStatus = (candidateId: string, newStatus: CandidateStatus) => {
     updateStatusMutation.mutate({ id: candidateId, status: newStatus });
     if (selectedCandidate && selectedCandidate.id === candidateId) {
@@ -131,7 +137,7 @@ export default function MainATSContainer() {
 
       return (
         <div className="flex flex-col h-full">
-          <div className="px-5 pt-4 pb-3 border-b border-border/40 bg-card">
+          <div className="px-6 pt-6 pb-3">
             <BackButton onClick={() => setSelectedRole(null)} label="Back to Roles" className="mb-2" />
             <div>
               <h2 className="text-base font-semibold">{selectedRole.title}</h2>
@@ -143,7 +149,7 @@ export default function MainATSContainer() {
 
           <div className="flex-1 overflow-hidden p-5">
             {roleFiltered.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-48 text-muted-foreground bg-card rounded-xl border border-border">
+              <div className="flex flex-col items-center justify-center h-48 text-muted-foreground bg-card rounded-lg border border-border">
                 <Users className="w-8 h-8 mb-2 opacity-30" />
                 <p className="text-sm">No candidates for this role yet.</p>
               </div>
@@ -183,7 +189,7 @@ export default function MainATSContainer() {
 
     // Default Departments List
     return (
-      <div className="p-6">
+      <div className="px-6 pt-6 pb-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-semibold tracking-tight mb-0.5">Department Hiring</h2>
@@ -211,7 +217,7 @@ export default function MainATSContainer() {
               <button
                 key={deptCode}
                 onClick={() => setSelectedDepartment(deptCode)}
-                className="p-5 rounded-xl border border-border bg-card hover:bg-muted/20 dark:hover:bg-white/[0.04] transition-all duration-200 text-left group hover:border-border/80 hover:shadow-md cursor-pointer"
+                className="p-5 rounded-lg border border-border bg-card hover:bg-muted/20 dark:hover:bg-white/[0.04] transition-all duration-200 text-left group hover:border-border/80 hover:shadow-md cursor-pointer"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
@@ -264,6 +270,7 @@ export default function MainATSContainer() {
   return (
     <div className="flex flex-col h-full">
       {/* Sub-header controls */}
+      {false && (
       <div className="border-b border-border/30 bg-card/40 px-5 py-3 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -324,17 +331,6 @@ export default function MainATSContainer() {
               </div>
             )}
 
-            {/* Contextual Action Button */}
-            {activeTab === 'dashboard' && (
-              <button
-                onClick={() => setShowNewJobModal(true)}
-                className="px-3 py-1.5 text-xs bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all duration-200 flex items-center gap-1.5 shadow-sm cursor-pointer"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                New Job
-              </button>
-            )}
-
             {activeTab === 'requisitions' && (
               <button
                 onClick={() => setShowNewJobModal(true)}
@@ -376,6 +372,7 @@ export default function MainATSContainer() {
           </div>
         )}
       </div>
+      )}
 
       {/* Main Tab Render Body */}
       <div className="flex-1 overflow-auto">
@@ -413,7 +410,86 @@ export default function MainATSContainer() {
             )}
 
             {activeTab === 'candidates' && (
-              <div className="p-5">
+              <div className="px-6 pt-6 pb-8 space-y-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h2 className="text-xl font-semibold tracking-tight mb-0.5">Candidates</h2>
+                    <p className="text-xs text-muted-foreground">
+                      {candidates.length} total applicants under tracking
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 flex-wrap justify-end">
+                    <div className="relative">
+                      <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
+                      <input
+                        type="text"
+                        placeholder="Search candidates..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-8 pr-3 py-1.5 text-xs bg-muted/30 border border-border rounded-lg w-64 focus:outline-none focus:ring-1 focus:ring-foreground/20 focus:bg-card transition-all duration-200"
+                      />
+                    </div>
+
+                    <button
+                      onClick={() => setShowFilterPanel(!showFilterPanel)}
+                      className={`p-1.5 rounded-lg border border-border transition-all duration-200 cursor-pointer ${
+                        showFilterPanel ? 'bg-foreground/15 shadow-sm' : 'hover:bg-foreground/[0.07] bg-card'
+                      }`}
+                      title="Toggle Filters"
+                    >
+                      <Filter className="w-4 h-4" />
+                    </button>
+
+                    <div className="flex items-center gap-0.5 bg-muted/30 rounded-lg p-0.5 border border-border">
+                      <button
+                        onClick={() => setView('kanban')}
+                        className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer ${
+                          view === 'kanban' ? 'bg-card shadow-sm' : 'hover:bg-foreground/[0.06]'
+                        }`}
+                        title="Kanban View"
+                      >
+                        <LayoutGrid className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => setView('list')}
+                        className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer ${
+                          view === 'list' ? 'bg-card shadow-sm' : 'hover:bg-foreground/[0.06]'
+                        }`}
+                        title="List View"
+                      >
+                        <List className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-thin">
+                  <button
+                    onClick={() => handleCategoryClick('All')}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap cursor-pointer ${
+                      activeCategory === 'All'
+                        ? 'bg-foreground/15 text-foreground shadow-sm'
+                        : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    All Â· {candidates.length}
+                  </button>
+                  {statuses.map((status) => (
+                    <button
+                      key={status}
+                      onClick={() => handleCategoryClick(status)}
+                      className={`px-3 py-1 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap cursor-pointer ${
+                        activeCategory === status
+                          ? 'bg-foreground/15 text-foreground shadow-sm'
+                          : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
+                      }`}
+                    >
+                      {status} Â· {statusCounts[status]}
+                    </button>
+                  ))}
+                </div>
+
                 {view === 'kanban' ? (
                   <KanbanBoard
                     candidates={filteredByCategory}

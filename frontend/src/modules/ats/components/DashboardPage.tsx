@@ -135,11 +135,11 @@ export function DashboardPage({
   const interviewRate = totalApplicants > 0 ? (((technical + ptc + founders) / totalApplicants) * 100).toFixed(1) : '0';
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="px-6 pt-6 pb-8 space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-xl font-semibold tracking-tight mb-1">Recruitment Operations</h2>
+          <h2 className="text-xl font-semibold tracking-tight mb-0.5">Recruitment Operations</h2>
           <p className="text-xs text-muted-foreground">
             Real-time hiring intelligence · {mockRecruiters.filter(r => r.status === 'active').length} active recruiters · {departments.length} departments
           </p>
@@ -207,7 +207,7 @@ export function DashboardPage({
       {/* Main Content Grid */}
       <div className="grid grid-cols-3 gap-4">
         {/* Conversion Funnel */}
-        <div className="col-span-2 p-5 rounded-xl border border-border bg-card">
+        <div className="col-span-2 p-5 rounded-lg border border-border bg-card">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-semibold">Candidate Conversion Funnel</h3>
             <span className="text-[10px] text-muted-foreground">Last 30 days</span>
@@ -285,7 +285,7 @@ export function DashboardPage({
         </div>
 
         {/* Bottleneck Alerts */}
-        <div className="p-5 rounded-xl border border-border bg-card">
+        <div className="p-5 rounded-lg border border-border bg-card">
           <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <AlertCircle className="w-4 h-4 text-amber-500" />
             Bottleneck Alerts
@@ -317,7 +317,7 @@ export function DashboardPage({
       {/* Second Row */}
       <div className="grid grid-cols-3 gap-4">
         {/* Department Pipeline Health */}
-        <div className="col-span-2 p-5 rounded-xl border border-border bg-card">
+        <div className="col-span-2 p-5 rounded-lg border border-border bg-card">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-semibold">Department Pipeline Health</h3>
             <span className="text-[10px] text-muted-foreground">Top 8 by progress</span>
@@ -348,7 +348,7 @@ export function DashboardPage({
         </div>
 
         {/* Upcoming Interviews */}
-        <div className="p-5 rounded-xl border border-border bg-card">
+        <div className="p-5 rounded-lg border border-border bg-card">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-semibold">Upcoming Interviews</h3>
             <span className="text-[10px] px-2 py-0.5 rounded-md bg-foreground/10 text-foreground font-medium border border-border/50">
@@ -389,7 +389,7 @@ export function DashboardPage({
       {/* Third Row */}
       <div className="grid grid-cols-3 gap-4">
         {/* Priority Hiring Roles */}
-        <div className="p-5 rounded-xl border border-border bg-card">
+        <div className="p-5 rounded-lg border border-border bg-card">
           <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <Target className="w-4 h-4 text-red-500" />
             Priority Hiring Roles
@@ -419,7 +419,7 @@ export function DashboardPage({
         </div>
 
         {/* Role Demand Trends */}
-        <div className="p-5 rounded-xl border border-border bg-card">
+        <div className="p-5 rounded-lg border border-border bg-card">
           <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <TrendingUp className="w-4 h-4" />
             Role Demand Trends
@@ -447,7 +447,7 @@ export function DashboardPage({
         </div>
 
         {/* Recruiter Workload */}
-        <div className="p-5 rounded-xl border border-border bg-card">
+        <div className="p-5 rounded-lg border border-border bg-card">
           <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <UserCheck className="w-4 h-4" />
             Recruiter Workload
@@ -490,7 +490,7 @@ export function DashboardPage({
       {/* Fourth Row */}
       <div className="grid grid-cols-3 gap-4">
         {/* Aging Requisitions */}
-        <div className="p-5 rounded-xl border border-border bg-card">
+        <div className="p-5 rounded-lg border border-border bg-card">
           <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <Clock className="w-4 h-4 text-amber-500" />
             Aging Requisitions
@@ -521,7 +521,7 @@ export function DashboardPage({
         </div>
 
         {/* Recruiter Activity Feed */}
-        <div className="col-span-2 p-5 rounded-xl border border-border bg-card">
+        <div className="col-span-2 p-5 rounded-lg border border-border bg-card">
           <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <Activity className="w-4 h-4" />
             Recruiter Activity Feed
@@ -559,7 +559,7 @@ export function DashboardPage({
 
       {/* Pipeline Health KPIs */}
       <div className="grid grid-cols-6 gap-4">
-        <div className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-all duration-200 cursor-pointer">
+        <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-all duration-200 cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <p className="text-xs text-muted-foreground uppercase tracking-wide">Conversion Rate</p>
             <Zap className="w-3.5 h-3.5 text-muted-foreground" />
@@ -574,7 +574,7 @@ export function DashboardPage({
           <p className="text-[10px] text-muted-foreground">screening → selected</p>
         </div>
 
-        <div className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-all duration-200 cursor-pointer">
+        <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-all duration-200 cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <p className="text-xs text-muted-foreground uppercase tracking-wide">Interview Rate</p>
             <CalendarDays className="w-3.5 h-3.5 text-muted-foreground" />
@@ -589,7 +589,7 @@ export function DashboardPage({
           <p className="text-[10px] text-muted-foreground">reaching interviews</p>
         </div>
 
-        <div className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-all duration-200 cursor-pointer">
+        <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-all duration-200 cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <p className="text-xs text-muted-foreground uppercase tracking-wide">Time to Hire</p>
             <Clock className="w-3.5 h-3.5 text-muted-foreground" />
@@ -604,7 +604,7 @@ export function DashboardPage({
           <p className="text-[10px] text-muted-foreground">average velocity</p>
         </div>
 
-        <div className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-all duration-200 cursor-pointer">
+        <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-all duration-200 cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <p className="text-xs text-muted-foreground uppercase tracking-wide">Active Pipeline</p>
             <Users className="w-3.5 h-3.5 text-muted-foreground" />
@@ -619,7 +619,7 @@ export function DashboardPage({
           <p className="text-[10px] text-muted-foreground">in active stages</p>
         </div>
 
-        <div className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-all duration-200 cursor-pointer">
+        <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-all duration-200 cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <p className="text-xs text-muted-foreground uppercase tracking-wide">Open Positions</p>
             <Briefcase className="w-3.5 h-3.5 text-muted-foreground" />
@@ -634,7 +634,7 @@ export function DashboardPage({
           <p className="text-[10px] text-muted-foreground">across {departments.length} depts</p>
         </div>
 
-        <div className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-all duration-200 cursor-pointer">
+        <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-all duration-200 cursor-pointer">
           <div className="flex items-center justify-between mb-2">
             <p className="text-xs text-muted-foreground uppercase tracking-wide">Fill Rate</p>
             <CheckCircle2 className="w-3.5 h-3.5 text-muted-foreground" />
@@ -672,7 +672,7 @@ function MetricCard({
   return (
 <div
   onClick={onClick}
-  className="p-4 rounded-xl border border-border bg-card hover:bg-muted/20 transition-all duration-200 cursor-pointer group"
+  className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-all duration-200 cursor-pointer group"
 >
       <div className="flex items-center justify-between mb-3">
         <div className="p-2 rounded-lg bg-muted/40 group-hover:bg-muted/60 transition-colors">

@@ -6,7 +6,7 @@ interface Props {
 
 function MetricCard({ label, value, sub }: { label: string; value: string | number; sub?: string }) {
   return (
-    <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-1.5">
+    <div className="bg-card border border-border rounded-lg p-4 flex flex-col gap-1.5">
       <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">{label}</span>
       <span className="text-2xl font-bold text-foreground tracking-tight">{value}</span>
       {sub && <span className="text-[11px] text-muted-foreground">{sub}</span>}
@@ -163,7 +163,7 @@ export function AnalyticsPage({ candidates }: Props) {
   const maxAvgExp = Math.max(...deptExpData.map(d => d.avg), 1);
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="px-6 pt-6 pb-8 space-y-6">
       <div>
         <h2 className="text-xl font-semibold tracking-tight mb-0.5">Analytics</h2>
         <p className="text-xs text-muted-foreground">Hiring intelligence across all departments · May 2026</p>
@@ -181,7 +181,7 @@ export function AnalyticsPage({ candidates }: Props) {
 
       {/* Row 1: Pipeline + Monthly Trend */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-card border border-border rounded-xl p-4">
+        <div className="bg-card border border-border rounded-lg p-4">
           <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mb-4">Pipeline Stages</h3>
           <div className="space-y-2.5">
             {stageData.map(({ stage, short, count }) => (
@@ -199,7 +199,7 @@ export function AnalyticsPage({ candidates }: Props) {
           </div>
         </div>
 
-        <div className="bg-card border border-border rounded-xl p-4">
+        <div className="bg-card border border-border rounded-lg p-4">
           <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mb-2">Monthly Application Trend</h3>
           <SparkLine data={monthData} valueKey="count" />
           <div className="flex justify-between mt-1">
@@ -215,12 +215,12 @@ export function AnalyticsPage({ candidates }: Props) {
 
       {/* Row 2: Dept Applicants + Experience Distribution */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-card border border-border rounded-xl p-4">
+        <div className="bg-card border border-border rounded-lg p-4">
           <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mb-4">Applicants by Department</h3>
           <VBars data={deptData} labelKey="dept" valueKey="count" height={160} />
         </div>
 
-        <div className="bg-card border border-border rounded-xl p-4">
+        <div className="bg-card border border-border rounded-lg p-4">
           <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mb-4">Experience Distribution</h3>
           <VBars data={expData} labelKey="range" valueKey="count" height={160} />
         </div>
@@ -228,7 +228,7 @@ export function AnalyticsPage({ candidates }: Props) {
 
       {/* Row 3: Role Demand + Avg Exp by Dept */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-card border border-border rounded-xl p-4">
+        <div className="bg-card border border-border rounded-lg p-4">
           <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mb-4">Role Demand</h3>
           <div className="space-y-2.5">
             {roleData.map(({ role, count }) => (
@@ -237,7 +237,7 @@ export function AnalyticsPage({ candidates }: Props) {
           </div>
         </div>
 
-        <div className="bg-card border border-border rounded-xl p-4">
+        <div className="bg-card border border-border rounded-lg p-4">
           <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mb-4">Avg Experience by Department</h3>
           <div className="space-y-2.5">
             {deptExpData.map(({ dept, avg }) => (
@@ -248,7 +248,7 @@ export function AnalyticsPage({ candidates }: Props) {
       </div>
 
       {/* Conversion Summary */}
-      <div className="bg-card border border-border rounded-xl p-4">
+      <div className="bg-card border border-border rounded-lg p-4">
         <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mb-4">Stage Conversion Rates</h3>
         <div className="grid grid-cols-7 gap-2">
           {stageData.map(({ stage, short, count }) => {

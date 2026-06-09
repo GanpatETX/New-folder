@@ -59,24 +59,25 @@ export function RequisitionPage() {
   <div className="h-full flex flex-col bg-background">
       {/* ATS Header */}
 
-<div className="border-b border-border/40">
-  <div className="flex items-center justify-between px-5 py-4">
+<div className="px-6 pt-6 pb-4">
+  <div className="flex items-start justify-between gap-4">
 
     <div>
-      <h1 className="text-2xl font-light tracking-wide">
-        The Guild ATS
-      </h1>
+      <h2 className="text-xl font-semibold tracking-tight mb-0.5">Requisitions</h2>
+      <p className="text-xs text-muted-foreground">
+        {requisitions.length} requisitions across active hiring workflows
+      </p>
 
-      <div className="flex items-center gap-6 mt-3 text-xs">
+      <div className="flex items-center gap-2 mt-4 text-xs overflow-x-auto pb-1 scrollbar-thin">
 
-        <span className="px-3 py-1 rounded-md bg-muted/50 font-semibold">
+        <span className="px-3 py-1 rounded-lg bg-foreground/15 text-foreground font-medium whitespace-nowrap">
           All · {requisitions.length}
         </span>
 
         {requisitionStatuses.map((status) => (
           <span
             key={status}
-            className="text-muted-foreground font-medium"
+            className="px-3 py-1 rounded-lg text-muted-foreground font-medium whitespace-nowrap"
           >
             {status} · {
               requisitions.filter(
@@ -99,7 +100,7 @@ export function RequisitionPage() {
             setSearchTerm(e.target.value)
           }
           placeholder="Search requisitions..."
-          className="w-[260px] pl-10 pr-4 py-2 rounded-lg border border-border bg-card"
+          className="w-[260px] pl-10 pr-4 py-2 rounded-lg border border-border bg-card text-xs"
         />
       </div>
 
@@ -133,7 +134,7 @@ export function RequisitionPage() {
 </div>
       {/* View */}
 
-      <div className="flex-1 min-h-0 px-4 pt-5">
+      <div className="flex-1 min-h-0 px-6 pt-2 pb-8">
         {viewMode === 'kanban' && (
          <RequisitionKanbanBoard
   requisitions={
@@ -153,7 +154,7 @@ export function RequisitionPage() {
         )}
 
         {viewMode === 'list' && (
-          <div className="p-6 border border-border rounded-xl">
+          <div className="p-6 border border-border rounded-lg">
             Requisition List View
           </div>
         )}

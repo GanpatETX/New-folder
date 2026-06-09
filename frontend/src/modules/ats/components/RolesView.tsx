@@ -24,7 +24,7 @@ export function RolesView({ departmentId, departmentName, onBack, onRoleClick }:
   const [selectedJob, setSelectedJob] = useState<any | null>(null);
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="px-6 pt-6 pb-8 space-y-6">
       {/* Breadcrumb */}
       <div>
         <BackButton onClick={onBack} label="Back to All Departments" />
@@ -63,7 +63,7 @@ export function RolesView({ departmentId, departmentName, onBack, onRoleClick }:
               <div
                 key={job.id}
                 onClick={() => onRoleClick(job.id, job.title)}
-                className="p-5 rounded-xl border border-border bg-card hover:bg-muted/20 dark:hover:bg-white/[0.04] transition-all duration-200 text-left group hover:border-border/80 hover:shadow-md cursor-pointer"
+                className="p-5 rounded-lg border border-border bg-card hover:bg-muted/20 dark:hover:bg-white/[0.04] transition-all duration-200 text-left group hover:border-border/80 hover:shadow-md cursor-pointer"
                 style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}
               >
                 {/* Header */}

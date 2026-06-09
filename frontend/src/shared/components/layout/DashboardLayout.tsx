@@ -15,6 +15,7 @@ import {
   LayoutGrid,
   User,
   LogOut,
+  Plus,
 } from 'lucide-react';
 import type { RootState } from '@/app/store';
 import { setActiveTab, setAppView, setTheme } from '../../store/uiSlice';
@@ -56,6 +57,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     dispatch(setTheme(nextTheme));
   };
 
+  const handleNewJobClick = () => {
+    window.dispatchEvent(new Event('ats:new-job'));
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
       {/* Engineering Drawing Background */}
@@ -79,17 +84,17 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Main Layout */}
       <div className="relative z-10 flex h-screen overflow-hidden">
         {/* Sidebar */}
-        <div className="w-[220px] flex-shrink-0 h-screen border-r border-border bg-card backdrop-blur-xl flex flex-col px-3 py-6 overflow-hidden">
+        <div className="w-[204px] flex-shrink-0 h-screen border-r border-border bg-card backdrop-blur-xl flex flex-col px-0 py-6 overflow-hidden">
           <div className="flex flex-col h-full">
             {/* Logo */}
             <div className="mb-10 flex items-center justify-center px-2 group">
               <button
                 onClick={() => dispatch(setAppView('erp-modules'))}
-                className="relative transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-2xl p-2"
+                className="relative transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-2xl p-1"
                 title="Return to ERP Home"
               >
                 <div className="absolute inset-0 rounded-2xl bg-primary/0 group-hover:bg-primary/10 transition-all duration-300 blur-xl" />
-                <GuildLogo className="h-16 w-16 relative" theme={theme} />
+                <GuildLogo className="h-[68px] w-[68px] relative" theme={theme} />
 
                 {/* Tooltip */}
                 <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 px-3 py-2 bg-foreground text-background text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg z-50">
@@ -101,14 +106,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </div>
 
             {/* Sidebar Navigation */}
-            <nav className="space-y-1 flex-1 overflow-y-auto scrollbar-thin pr-1">
+            <nav className="space-y-2 flex-1 overflow-y-auto scrollbar-thin pr-3">
               {sidebarItems.map((item) => {
                 const isActive = activeTab === item.tab;
                 return (
                   <button
                     key={item.label}
                     onClick={() => dispatch(setActiveTab(item.tab))}
-                    className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all duration-200 group ${
+                    className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-r-xl text-sm transition-all duration-200 group ${
                       isActive
                         ? 'bg-foreground/10 text-foreground shadow-sm'
                         : 'text-muted-foreground hover:text-foreground hover:bg-foreground/[0.06]'
@@ -216,7 +221,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <div className="flex-1 min-w-0 flex flex-col h-screen overflow-hidden">
           {/* Header */}
           <header className="border-b border-border/50 bg-card/60 backdrop-blur-md shadow-sm flex-shrink-0">
-            <div className="px-5 py-3 flex items-center justify-between">
+            <div className="h-[54px] px-6 flex items-center justify-between">
               <h1
                 className="text-xl tracking-tight"
                 style={{
@@ -256,6 +261,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                       <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                     </svg>
                   )}
+                </button>
+                <button
+                  onClick={handleNewJobClick}
+                  className="px-3 py-1.5 text-xs bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all duration-200 flex items-center gap-1.5 shadow-sm cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  New Job
                 </button>
               </div>
             </div>

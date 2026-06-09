@@ -43,7 +43,7 @@ export function RequisitionCard({
   <div
     ref={drag}
     onClick={onClick}
-    className={`bg-card/90 border border-border/60 rounded-xl p-3.5 cursor-pointer transition-all duration-300 ease-out hover:scale-[1.012] hover:border-border/90 hover:-translate-y-0.5 ${
+    className={`bg-card/90 border border-border/60 rounded-lg p-3.5 cursor-pointer transition-all duration-300 ease-out hover:scale-[1.012] hover:border-border/90 hover:-translate-y-0.5 ${
       isDragging ? 'opacity-40 scale-95' : 'opacity-100'
     } backdrop-blur-sm will-change-transform`}
     style={{
