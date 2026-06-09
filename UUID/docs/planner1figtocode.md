@@ -119,7 +119,7 @@
 
 ### Design ATS Header Structure (in `App.tsx`):
 ```
-┌─────────────────────────────────────────────────────┐
+┌─────────────────────────────────────────────────────┝
 │ Row 1:  "The Guild ATS"    [Search] [Filter] [View] [Theme] [+ New Job]  │
 │ Row 2:  [All] [Screening] [Fitment] [Technical] [PTC] [Founders] [...]   │
 └─────────────────────────────────────────────────────┘
@@ -127,7 +127,7 @@
 
 ### Current Frontend Header (`DashboardLayout.tsx`):
 ```
-┌─────────────────────────────────────────────────────┐
+┌─────────────────────────────────────────────────────┝
 │ Row 1:  "The Guild ATS"                    [Theme]  │
 └─────────────────────────────────────────────────────┘
 ```
@@ -217,32 +217,41 @@ Execute in this order (highest visual impact first):
 2. Change `--font-size: 16px`, `--radius: 0.625rem`
 3. Verify font import in `fonts.css` — both already import `Space Grotesk` + `Fauna One`
 
-### Phase 2: Layout Header
-4. Port Design ATS header structure into `MainATSContainer.tsx`:
+### Phase 2: Layout Header (see Section 5 for per-page details)
+4. Port Design ATS header structure into `MainATSContainer.tsx` and each page component:
    - Title with `FontFamily: 'Fauna One', letterSpacing: 0.06em`
-   - Search bar, filter button, view toggle, theme toggle, "New Job" button
-   - Pipeline status tabs row below
+   - Search bar, filter button, view toggle, theme toggle, "New Job" button (pages that need them)
+   - Pipeline/category status tabs row below (pages that have them)
+   - **See Section 5 (page-by-page) for tab-specific header requirements**
 
 ### Phase 3: Theme Toggle
 5. Port `ThemeToggle.tsx` with ripple animation into `shared/components/ui/ThemeToggle.tsx`
 6. Wire it to Zustand store's `theme` + `toggleTheme`
 
-### Phase 4: Dashboard Page
+### Phase 4: Dashboard Page (see 5.1)
 7. Compare `frontend/src/modules/ats/pages/DashboardPage.tsx` with Design ATS's `DashboardPage.tsx`
 8. Port card-based metrics layout, stat cards, department pipeline cards
+9. Fix `showPipelineHeader` to be `false` on Dashboard tab
 
-### Phase 5: Remaining Pages
-9. Compare `RequisitionsPage.tsx`, `InterviewsPage.tsx`, `ReferralsPage.tsx`, `AnalyticsPage.tsx` against Design ATS versions
-10. Port any styling differences (card treatments, table styles, chart styling)
+### Phase 5: Candidates & Jobs Pages (see 5.2, 5.3)
+10. Verify Candidates tab header (Row 1 + Row 2) matches Design ATS exactly
+11. Verify Jobs 3-level flow (Departments ? Roles ? Role Pipeline) breadcrumb and card styling
 
-### Phase 6: Login Page
-11. Style `frontend/src/app/pages/Login.tsx` with Design ATS color tokens if needed
+### Phase 6: Requisitions, Interviews, Referrals, Analytics, Settings (see 5.4�5.8)
+12. **Requisitions (5.4)** � Biggest gap: convert inline header to `<header>` with Row 2 clickable status tabs
+13. **Interviews (5.5)** � Wrap header in `<header>` with backdrop-blur
+14. **Referrals (5.6)** � Wrap header in `<header>` with backdrop-blur
+15. **Analytics (5.7)** � Fix card radius `rounded-lg ? rounded-xl`, padding `p-4 ? p-5`
+16. **Settings (5.8)** � Already close, verify inner card components after token updates
 
-### Phase 7: Final Polish
-12. Run `npm run dev` on both projects, open in browser, compare side-by-side
-13. Test dark mode toggle — verify colors match in both themes
-14. Check border-radius consistency (all `rounded-xl` = `0.625rem` = `10px`)
-15. Run `npm run lint` and `npm run typecheck` on the production frontend
+### Phase 7: Login Page
+17. Style `frontend/src/app/pages/Login.tsx` with Design ATS color tokens if needed
+
+### Phase 8: Final Polish
+18. Run `npm run dev` on both projects, open in browser, compare side-by-side
+19. Test dark mode toggle � verify colors match in both themes
+20. Check border-radius consistency (all `rounded-xl` = `0.625rem` = `10px`)
+21. Run `npm run lint` and `npm run typecheck` on the production frontend
 
 ---
 
@@ -261,3 +270,303 @@ Execute in this order (highest visual impact first):
 ## Single-Line Summary
 
 > **Replace `frontend/src/styles/theme.css` tokens with Design ATS values, update header layout + pipeline tabs in `MainATSContainer.tsx`, port the animated `ThemeToggle`, fix font references, and verify component styling parity — keep all production architecture intact.**
+
+## Page-by-Page Header & Layout Alignment
+
+The **header pattern below is universal across all non-Dashboard pages** in Design ATS. Every tab � Candidates, Jobs, Requisitions, Interviews, Referrals, Analytics, Settings � uses either the **full header** (Row 1 + Row 2) or a **simplified header** depending on whether the page has a secondary filter row.
+
+### Universal Header Pattern (Design ATS)
+
+**Full header** (Row 1 + Row 2) � used on tabs that have a secondary filter category row:
+```
+Row 1: [Page Title]              [Search] [Filter btn] [View toggle] [Theme] [+ Primary Action]
+Row 2: [All � N] [StatusA � N] [StatusB � N] [StatusC � N] ...   (horizontal scroll)
+```
+
+**Simplified header** (Row 1 only) � used on pages without a category filter row:
+```
+Row 1: [Page Title]    [Type dropdown or other controls]
+```
+
+---
+
+### 5.1 Dashboard Page
+**File:** `frontend/src/modules/ats/pages/DashboardPage.tsx`
+
+| Aspect | Design ATS | Current Frontend |
+|--------|-----------|-----------------|
+| Header owner | `MainATSContainer.tsx` (header outside page) | `DashboardPage.tsx` inside content area |
+| Title | "The Guild ATS" (in container header) | DashboardPage has its own `<h2>` inside content |
+| Secondary row | Pipeline status tabs (All, Screening, Fitment�) | ? Missing � tabs are in `MainATSContainer` but not connected to Dashboard |
+
+**Design ATS behavior:**
+- Dashboard tab does **not** show pipeline tabs (Row 2 hidden)
+- Shows stat cards, department pipeline, upcoming interviews, bottleneck alerts
+- "New Job" button visible
+
+**Fix for current frontend:**
+- Keep `DashboardPage.tsx` content-as-is (stat cards etc.)
+- Ensure `showPipelineHeader` is `false` when `activeTab === 'dashboard'` (currently it checks `activeTab === 'candidates'`, needs to also exclude dashboard)
+- Title and actions stay in `MainATSContainer` header
+
+---
+
+### 5.2 Candidates Page (Tab: `candidates`)
+**File:** `frontend/src/modules/ats/components/MainATSContainer.tsx`
+
+This is the **primary case** already covered in Section 4.
+
+| Row | Elements |
+|-----|---------|
+| **Row 1** | Title: "The Guild ATS" � Search (placeholder: "Search candidates...") � Filter btn � Kanban/List toggle � ThemeToggle � [+ New Job] |
+| **Row 2** | Pipeline tabs: [All] [Screening] [Fitment Evaluation] [Technical Interview] [PTC Interview] [Founders' Interview] [Selected] [Rejected] [Talent Pool] � each with candidate count |
+
+**Current gap:** Row 2 tabs ARE present in `MainATSContainer` but Row 1 search/filter/view/button controls may not match Design ATS's exact classes. Verify:
+- Search input: `pl-8 pr-3 py-1.5 text-xs bg-muted/30 border border-border rounded-lg w-64 focus:outline-none focus:ring-1 focus:ring-foreground/20 focus:bg-card`
+- Filter button: `p-1.5 rounded-lg`, active state `bg-foreground/15 shadow-sm`, inactive `hover:bg-foreground/[0.07]`
+- View toggle: `flex items-center gap-0.5 bg-muted/30 rounded-lg p-0.5`, active `bg-card shadow-sm`
+- New Job button: `px-3 py-1.5 text-xs bg-primary text-primary-foreground rounded-lg`
+
+---
+
+### 5.3 Jobs / Requisitions Tab (Tab: `jobs`)
+**File:** `frontend/src/modules/ats/components/MainATSContainer.tsx` ? `renderJobsView()`
+
+Design ATS jobs flow has **three levels**:
+```
+Level 1: Departments grid ? (click dept) ?
+Level 2: Roles list ? (click role) ?
+Level 3: Role Candidate Pipeline (Kanban/List)
+```
+
+| Level | Header (Row 1) | Header (Row 2) |
+|-------|---------------|---------------|
+| Level 1 (Departments) | "The Guild ATS" + controls | Pipeline tabs (same as Candidates) |
+| Level 2 (Roles) | Breadcrumb: Back to Roles + Role title + dept name + applicant count | ? No secondary row |
+| Level 3 (Role Pipeline) | Breadcrumb: Back to Roles + Role title + dept + count | ? No secondary row |
+
+**Current frontend (`MainATSContainer`):**
+- Level 1: Has `renderJobsView()` when `!selectedDepartment` � shows department cards grid
+- Level 2: Has `RolesView` component
+- Level 3: Shows `KanbanBoard` or `ListView` for that role
+
+**Design ATS-specific styling to port:**
+- Breadcrumb area: `px-5 pt-4 pb-3 border-b border-border/40`
+- `BackButton` component with `label="Back to Roles"` and `className="mb-2"`
+- Title: `text-base font-semibold`
+- Subtitle: `text-xs text-muted-foreground mt-0.5`
+- Department cards: `p-5 rounded-xl border border-border bg-card hover:bg-muted/20 dark:hover:bg-white/[0.04] transition-all duration-200`
+
+---
+
+### 5.4 Requisitions Tab (Tab: `requisitions`)
+**File:** `frontend/src/modules/ats/pages/RequisitionPage.tsx`
+
+**This is the biggest mismatch � different header structure entirely.**
+
+#### Design ATS Header (dedicated `<header>` with two rows):
+```
+Row 1 (inside <header>):
+  px-5 py-3
+  [Title: "Requisitions"]                    [Search] [Filter btn] [View toggle]
+
+Row 2 (inside <header>, below Row 1):
+  mt-3 overflow-x-auto
+  [All � N] [Draft � N] [Approved � N] [Open � N] [Closed � N]   (clickable buttons)
+```
+
+#### Current Frontend Header (inside content `<div>`, NOT a `<header>`):
+```
+Inside <div className="h-full flex flex-col bg-background">:
+
+  [Title: "Requisitions"]              ? h2, text-xl, no header wrapper
+  [Subtitle: "N requisitions..."]      ? p, text-xs
+
+  [Status chips as <span> elements]   ? NOT clickable! Displayed as muted text spans
+  [Search input]                       ? Different style (w-[260px] pl-10 pr-4 py-2)
+  [View toggle buttons]               ? Different styling (p-2 rounded-lg, bg-muted active)
+  ? NO Filter button
+  ? NO <header> wrapper with border/backdrop-blur
+  ? NO clickable status tabs (they are static spans)
+```
+
+#### Required Changes to `RequisitionPage.tsx`
+
+1. **Convert header to `<header>` element** with Design ATS's class structure:
+   ```tsx
+   <header className="border-b border-border/50 bg-card/60 backdrop-blur-md shadow-sm flex-shrink-0">
+     <div className="px-5 py-3">
+  ```
+
+2. **Row 1 � Title + controls:**
+   - Title: `h1` with `text-xl tracking-tight` and `fontFamily: 'Fauna One', letterSpacing: '0.02em'`
+   - Search: same pattern as ATS (Design ATS) � `pl-8 pr-3 py-1.5 text-xs bg-muted/30 border border-border rounded-lg w-64`
+   - Filter button: `p-1.5 rounded-lg`, with active state `bg-foreground/15 shadow-sm`
+   - View toggle: inside `bg-muted/30 rounded-lg p-0.5` container
+
+3. **Row 2 � Status tabs (CRITICAL):**
+   - Change from static `<span>` to **clickable `<button>` elements**
+   - Each tab: `px-3 py-1 rounded-lg text-xs font-medium`
+   - Active: `bg-foreground/15 text-foreground shadow-sm`
+   - Inactive: `hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground`
+   - Add `onClick` to set `activeCategory` state
+   - Add `handleCategoryClick` function matching Design ATS pattern
+   - Already has `activeCategory` state � just needs to be wired to UI
+
+4. **Add `FilterPanel` integration:**
+   - Add `showFilterPanel` state
+   - Wire filter button to toggle it
+   - Already exists in component imports
+
+5. **Main content area:**
+   - Wrap kanban/list in `p-5` padding div
+   - Keep existing board/list components
+
+---
+
+### 5.5 Interviews Page (Tab: `interviews`)
+**File:** `frontend/src/modules/ats/components/interviews/InterviewsPage.tsx`
+
+| Aspect | Design ATS | Current Frontend |
+|--------|-----------|-----------------|
+| Header wrapper | ? No `<header>` � uses inline `<div>` | ? No `<header>` � uses inline `<div>` |
+| Title | `h2` with `text-xl font-semibold tracking-tight` | Same ? |
+| Subtitle | `text-xs text-muted-foreground` with counts | Same ? |
+| Controls | `<select>` for interview type filter | Same `<select>` ? |
+| Secondary row | Status tabs: [All] [Scheduled] [Pending Feedback] [Completed] � **clickable buttons** | Same tabs ? (clickable buttons) |
+
+**Gap:**
+- Header is **inside content area** (`px-6 pt-6 pb-8 space-y-6`), not in a fixed `<header>` with backdrop-blur like other pages
+- No border/shadow treatment on header
+- Current has `selectedType` dropdown for filtering � Design ATS also has this ?
+
+**Fix:**
+- Wrap title + controls in a `<header>` with `border-b border-border/50 bg-card/60 backdrop-blur-md shadow-sm`
+- Use `px-5 py-3` padding inside header
+- Move status tabs into the header (Row 2)
+- Content below gets `flex-1 overflow-auto`
+
+---
+
+### 5.6 Referrals Page (Tab: `referrals`)
+**File:** `frontend/src/modules/ats/pages/ReferralsPage.tsx`
+
+| Aspect | Design ATS | Current Frontend |
+|--------|-----------|-----------------|
+| Header wrapper | ? No `<header>` | ? No `<header>` |
+| Title | `h2` `text-xl font-semibold tracking-tight` | Same ? |
+| Subtitle | `text-xs text-muted-foreground` | Same ? |
+| Controls | None (referral form is a separate view) | Same ? |
+| Secondary row | Filter tabs: [All] [Pending] [Interviewed] [Hired] | Same tabs ? |
+
+**Gap:**
+- Same as Interviews � header is in content area, not a proper `<header>` with border/backdrop-blur
+- "New Referral" button may be missing or styled differently
+
+**Fix:**
+- Wrap header in `<header>` with Design ATS backdrop-blur treatment
+- Ensure filter tabs are styled with active/inactive states matching Design ATS (`bg-foreground/15` vs `hover:bg-foreground/[0.07]`)
+- Verify "New Referral" primary button styling matches `px-3 py-1.5 text-xs bg-primary text-primary-foreground rounded-lg`
+
+---
+
+### 5.7 Analytics Page (Tab: `analytics`)
+**File:** `frontend/src/modules/ats/pages/AnalyticsPage.tsx`
+
+| Aspect | Design ATS | Current Frontend |
+|--------|-----------|-----------------|
+| Header | Title + subtitle + [Export btn?] | Title + subtitle ? |
+| Secondary row | None � simple header | None ? |
+| Card treatments | `bg-card border border-border rounded-xl p-5` | `bg-card border border-border rounded-lg p-4` � radius/spacing mismatch |
+| Chart styling | Uses recharts with Design ATS colors | Uses custom VBars/HBar components |
+
+**Gap:**
+- Card radius: Design ATS uses `rounded-xl` (10px), current uses `rounded-lg` (8px)
+- Card padding: Design ATS uses `p-5`, current uses `p-4`
+- No chart library � uses custom bar components
+
+**Fix:**
+- Update card classes: `rounded-lg` ? `rounded-xl`, `p-4` ? `p-5`
+- Verify chart bar colors match Design ATS token values after token alignment
+- Add header backdrop-blur treatment if missing
+
+---
+
+### 5.8 Settings Page (Tab: `settings`)
+**File:** `frontend/src/modules/ats/pages/SettingsPage.tsx`
+
+| Aspect | Design ATS | Current Frontend |
+|--------|-----------|-----------------|
+| Layout | Sidebar (`w-64`) + Content (`flex-1`) | Sidebar (`w-64`) + Content (`flex-1`) ? |
+| Sidebar bg | `bg-card/60` | `bg-card/60` ? |
+| Sidebar active | `bg-foreground/10 text-foreground shadow-sm` | Same ? |
+| Chevron on active | `ChevronRight` with `ml-auto` | Same ? |
+| Content padding | `px-6 pt-6 pb-8` | `px-6 pt-6 pb-8` ? |
+| Section titles | `text-xl font-semibold tracking-tight` | Same ? |
+
+**Gap:**
+- Settings page is **already very close** � minimal changes needed
+- Ensure all inner card/table components use `rounded-xl` and `p-5` after token updates
+
+---
+
+### 5.9 Jobs ? Role Pipeline View (Tab: `jobs` ? role selected)
+**File:** `frontend/src/modules/ats/components/MainATSContainer.tsx` ? `renderJobsView()`
+
+When a user navigates: Jobs ? Department ? Role, they see the role's candidate pipeline:
+
+| Aspect | Design ATS | Current Frontend |
+|--------|-----------|-----------------|
+| Breadcrumb | `px-5 pt-4 pb-3 border-b border-border/40` with BackButton | Header area inside `MainATSContainer` |
+| Back button | `BackButton` with `label="Back to Roles"` | Uses `BackButton` component ? |
+| Title | `text-base font-semibold` | Same pattern ? |
+| Subtitle | `text-xs text-muted-foreground mt-0.5` with dept + count | ? |
+| Pipeline content | `p-5` padding around KanbanBoard or ListView | ? |
+| Empty state | Centered icon + "No candidates for this role yet." | Verify exists |
+
+**Fix:**
+- Ensure breadcrumb styling matches exactly: `border-b border-border/40`, `pb-3`, `pt-4`
+- Verify empty state matches Design ATS: `<Users className="w-8 h-8 mb-2 opacity-30" />` + `<p className="text-sm text-muted-foreground">No candidates for this role yet.</p>`
+
+---
+
+### Universal Header CSS Reference
+
+For all pages, the shared header treatment is:
+
+```tsx
+<header className="border-b border-border/50 bg-card/60 backdrop-blur-md shadow-sm flex-shrink-0">
+  <div className="px-5 py-3">
+    {/* Row 1: Title + Controls */}
+    <div className="flex items-center justify-between">
+      <h1 className="text-xl tracking-tight" style={{ fontFamily: "'Fauna One', serif", fontWeight: 100, letterSpacing: '0.02em' }}>
+        {pageTitle}
+      </h1>
+      <div className="flex items-center gap-2 flex-wrap">
+        {/* Search, filter, view toggle, theme toggle, action button */}
+      </div>
+    </div>
+    {/* Row 2: Status/Category Tabs (if applicable) */}
+    {hasTabs && (
+      <div className="flex items-center gap-1 mt-3 overflow-x-auto pb-1 scrollbar-thin">
+        {tabs.map(tab => (
+          <button
+            key={tab}
+            onClick={() => handleClick(tab)}
+            className={`px-3 py-1 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap ${
+              active === tab
+                ? 'bg-foreground/15 text-foreground shadow-sm'
+                : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            {tabLabel} � {count}
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+</header>
+```
+
+**Pages with Row 2 tabs:** Candidates, Requisitions, Interviews, Referrals, Jobs (levels 1-3)
+**Pages without Row 2 tabs:** Dashboard, Analytics, Settings
