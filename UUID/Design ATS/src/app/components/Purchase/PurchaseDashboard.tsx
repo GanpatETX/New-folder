@@ -1,4 +1,4 @@
-export function PurchaseDashboard() {
+export default function PurchaseDashboard() {
   const kpis = [
     {
       title: 'Active Requests',
@@ -412,8 +412,3 @@ export function PurchaseDashboard() {
     </div>
   )
 }
-
-
-
-
-export default PurchaseDashboard;
