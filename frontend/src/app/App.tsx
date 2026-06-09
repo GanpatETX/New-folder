@@ -1,6 +1,4 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import type { RootState } from './store';
 import { AppProviders } from './providers';
 import Login from './pages/Login';
 import AuthCallback from './pages/AuthCallback';
@@ -8,12 +6,13 @@ import { DashboardLayout } from '../shared/components/layout/DashboardLayout';
 import MainATSContainer from '../modules/ats/components/MainATSContainer';
 import { ERPModuleCatalog } from '../modules/ats/components/ERPModuleCatalog';
 import PurchaseModule from '../modules/purchase/components/PurchaseModule';
-import { setAppView } from '../shared/store/uiSlice';
+import { useAppStore } from './store';
+import type { AppView } from './store';
 
 function ProtectedRoutes() {
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  const appView = useSelector((state: RootState) => state.ui.appView);
-  const dispatch = useDispatch();
+  const isAuthenticated = useAppStore((s) => s.isAuthenticated);
+  const appView = useAppStore((s) => s.appView);
+  const setAppView = useAppStore((s) => s.setAppView);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -21,9 +20,9 @@ function ProtectedRoutes() {
 
   const handleModuleSelect = (moduleId: string) => {
     if (moduleId === 'ats') {
-      dispatch(setAppView('ats'));
+      setAppView('ats' as AppView);
     } else if (moduleId === 'procurement') {
-      dispatch(setAppView('purchase'));
+      setAppView('purchase' as AppView);
     }
   };
 

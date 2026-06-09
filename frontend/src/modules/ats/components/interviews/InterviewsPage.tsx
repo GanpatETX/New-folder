@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useInterviewsQuery } from '../hooks/useATS';
+import { useInterviewsQuery } from '../../hooks/useATS';
 import {
   Calendar,
   Clock,

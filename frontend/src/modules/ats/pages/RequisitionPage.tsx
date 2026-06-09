@@ -4,8 +4,8 @@ import { useRequisitionsQuery } from '../hooks/useATS';
 import { requisitionStatuses } from '../../../shared/api/mocks/Requisitions';
 import type { Requisition, RequisitionStatus } from '@/shared/types';
 
-import { RequisitionKanbanBoard } from './RequisitionKanbanBoard';
-import { RequisitionDetailModal } from './RequisitionDetailModal';
+import { RequisitionKanbanBoard } from '../components/RequisitionKanbanBoard';
+import { RequisitionDetailModal } from '../components/RequisitionDetailModal';
 
 export function RequisitionPage() {
   const { data: serverRequisitions = [] } = useRequisitionsQuery();

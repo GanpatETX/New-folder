@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { setLoginSuccess } from '../../shared/store/authSlice';
+import { useAppStore } from '../../app/store';
 import { apiClient } from '../../shared/api/client';
 
 export default function AuthCallback() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const setLoginSuccess = useAppStore((s) => s.setLoginSuccess);
 
   useEffect(() => {
     const token = searchParams.get('token');
@@ -29,7 +28,7 @@ export default function AuthCallback() {
             userProfile = response.data;
           }
 
-          dispatch(setLoginSuccess({ token, user: userProfile }));
+          setLoginSuccess({ token, user: userProfile });
           localStorage.setItem('last_user_name', userProfile.name);
           navigate('/');
         } catch (error) {
@@ -44,7 +43,7 @@ export default function AuthCallback() {
       console.warn('SSO callback accessed without token parameter.');
       navigate('/login');
     }
-  }, [searchParams, dispatch, navigate]);
+  }, [searchParams, navigate, setLoginSuccess]);
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">

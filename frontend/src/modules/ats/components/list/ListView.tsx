@@ -1,5 +1,5 @@
 import { MapPin, Calendar, Clock } from 'lucide-react';
-import type { Candidate, CandidateStatus } from '../../../shared/types';
+import type { Candidate, CandidateStatus } from '@/shared/types';
 
 interface ListViewProps {
   candidates: Candidate[];

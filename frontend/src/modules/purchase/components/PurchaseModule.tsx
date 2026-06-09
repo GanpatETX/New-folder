@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import {
   Home,
   Briefcase,
@@ -12,12 +11,11 @@ import {
   Moon,
   Plus,
   Grid3X3,
-  List,
   SlidersHorizontal,
+  List,
 } from 'lucide-react'
 
-import type { RootState } from '@/app/store'
-import { setAppView, toggleTheme } from '@/shared/store/uiSlice'
+import { useAppStore } from '@/app/store'
 import { GuildLogo } from '@/shared/components/GuildLogo'
 import PurchaseDashboard from './PurchaseDashboard'
 import RequisitionPage from './RequisitionPage'
@@ -33,8 +31,9 @@ type PurchaseTab =
   | 'vendors'
 
 export default function PurchaseModule() {
-  const dispatch = useDispatch()
-  const theme = useSelector((state: RootState) => state.ui.theme)
+  const theme = useAppStore((s) => s.theme);
+  const toggleTheme = useAppStore((s) => s.toggleTheme);
+  const setAppView = useAppStore((s) => s.setAppView);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [purchaseTab, setPurchaseTab] =
     useState<PurchaseTab>('dashboard')
@@ -56,7 +55,7 @@ export default function PurchaseModule() {
       <aside className="w-[220px] border-r border-border/50 bg-card/40 flex flex-col">
         <div className="h-[88px] flex items-center px-8 border-b border-border/50">
           <button
-            onClick={() => dispatch(setAppView('erp-modules'))}
+            onClick={() => setAppView('erp-modules')}
             className="flex items-center justify-center transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-2xl p-1"
             title="Return to ERP Catalog"
           >
@@ -123,7 +122,7 @@ export default function PurchaseModule() {
             </button>
 
             <button
-              onClick={() => dispatch(toggleTheme())}
+              onClick={() => toggleTheme()}
               className="w-11 h-11 rounded-xl border border-border/50 bg-card/40 flex items-center justify-center hover:bg-white/5 transition-colors"
               aria-label="Toggle Theme"
             >

@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   Search,
   Filter,
@@ -8,30 +7,29 @@ import {
   Plus,
   Users,
 } from 'lucide-react';
-import type { RootState } from '@/app/store';
-import { setActiveTab } from '@/shared/store/uiSlice';
-import type { ActiveTab } from '@/shared/store/uiSlice';
+import type { ActiveTab } from '@/app/store';
+import { useAppStore } from '@/app/store';
 import { useCandidatesQuery, useUpdateCandidateStatusMutation } from '../hooks/useATS';
 import type { Candidate, CandidateStatus } from '@/shared/types';
 
 // Component Imports
-import { KanbanBoard } from './KanbanBoard';
-import { ListView } from './ListView';
-import { DashboardPage } from './DashboardPage';
-import { AnalyticsPage } from './AnalyticsPage';
-import RequisitionPage from './RequisitionPage';
-import { InterviewsPage } from './InterviewsPage';
-import { ReferralsPage } from './ReferralsPage';
-import { SettingsPage } from './SettingsPage';
-import { FilterPanel } from './FilterPanel';
-import { NewJobModal } from './NewJobModal';
-import { CandidateProfile } from './CandidateProfile';
-import { RolesView } from './RolesView';
+import { KanbanBoard } from './kanban/KanbanBoard';
+import { ListView } from './list/ListView';
+import { DashboardPage } from '../pages/DashboardPage';
+import { AnalyticsPage } from '../pages/AnalyticsPage';
+import { RequisitionPage } from '../pages/RequisitionPage';
+import { InterviewsPage } from './interviews/InterviewsPage';
+import { ReferralsPage } from '../pages/ReferralsPage';
+import { SettingsPage } from '../pages/SettingsPage';
+import { FilterPanel } from './filters/FilterPanel';
+import { NewJobModal } from './jobs/NewJobModal';
+import { CandidateProfile } from './candidate/CandidateProfile';
+import { RolesView } from './jobs/RolesView';
 import { BackButton } from '@/shared/components/ui/BackButton';
 
 export default function MainATSContainer() {
-  const dispatch = useDispatch();
-  const activeTab = useSelector((state: RootState) => state.ui.activeTab);
+  const activeTab = useAppStore((s) => s.activeTab);
+  const setActiveTab = useAppStore((s) => s.setActiveTab);
 
   // Queries & Mutations
   const { data: candidates = [], isLoading, isError, refetch } = useCandidatesQuery();
@@ -403,7 +401,7 @@ export default function MainATSContainer() {
           <>
             {activeTab === 'dashboard' && (
               <DashboardPage
-                setActiveTab={(tab: ActiveTab) => dispatch(setActiveTab(tab))}
+                setActiveTab={(tab: ActiveTab) => setActiveTab(tab)}
                 setSelectedCandidate={setSelectedCandidate}
                 setCandidateStageFilter={setCandidateStageFilter}
               />

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { mockCandidates } from '@/shared/api/mocks/Candidates';
 import { Users, TrendingUp, CheckCircle2, Clock, Award, Send, UserPlus } from 'lucide-react';
-import { ReferralForm } from './ReferralForm';
-import { ReferralConfirmation } from './ReferralConfirmation';
+import { ReferralForm } from '../components/referrals/ReferralForm';
+import { ReferralConfirmation } from '../components/referrals/ReferralConfirmation';
 
 type ViewState = 'list' | 'form' | 'success' | 'duplicate';
 

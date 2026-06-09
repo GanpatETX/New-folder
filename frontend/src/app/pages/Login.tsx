@@ -1,10 +1,9 @@
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setLoginSuccess } from '../../shared/store/authSlice';
+import { useAppStore } from '../../app/store';
 import { GuildLogo } from '../../shared/components/GuildLogo';
 
 export default function Login() {
-  const dispatch = useDispatch();
+  const dispatch = useAppStore((s) => s.setLoginSuccess);
   const navigate = useNavigate();
 
   const lastUserName = localStorage.getItem('last_user_name') || 'Gautham';
@@ -23,7 +22,7 @@ export default function Login() {
         name: 'Admin User',
       };
 
-      dispatch(setLoginSuccess({ token: mockToken, user: mockUser }));
+      dispatch({ token: mockToken, user: mockUser });
       localStorage.setItem('last_user_name', mockUser.name);
       navigate('/');
     } else {

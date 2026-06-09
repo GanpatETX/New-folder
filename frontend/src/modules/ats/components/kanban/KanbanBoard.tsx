@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useDrop } from 'react-dnd';
-import { CandidateCard } from './CandidateCard';
-import { StageTransitionModal } from './StageTransitionModal';
-import type { Candidate, CandidateStatus } from '../../../shared/types';
+import { CandidateCard } from '../candidate/CandidateCard';
+import { StageTransitionModal } from '../candidate/StageTransitionModal';
+import type { Candidate, CandidateStatus } from '@/shared/types';
 
 interface KanbanBoardProps {
   candidates: Candidate[];

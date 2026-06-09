@@ -1,6 +1,6 @@
 import { useDrag } from 'react-dnd';
 import { MapPin, Calendar, Briefcase, Clock } from 'lucide-react';
-import type { Candidate } from '../../../shared/types';
+import type { Candidate } from '@/shared/types';
 
 interface CandidateCardProps {
   candidate: Candidate;

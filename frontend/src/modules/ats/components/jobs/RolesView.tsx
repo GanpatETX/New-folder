@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useJobsQuery, useCandidatesQuery } from '../hooks/useATS';
-import { BackButton } from '../../../shared/components/ui/BackButton';
+import { useJobsQuery, useCandidatesQuery } from '../../hooks/useATS';
+import { BackButton } from '@/shared/components/ui/BackButton';
 import {
   Users,
   Clock,
