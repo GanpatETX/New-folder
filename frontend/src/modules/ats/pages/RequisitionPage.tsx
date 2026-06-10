@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState, useEffect } from 'react';
-import { LayoutGrid, List, Search } from 'lucide-react';
+import { LayoutGrid, List, Search, Filter } from 'lucide-react';
 import { useRequisitionsQuery } from '../hooks/useATS';
 import { requisitionStatuses } from '../../../shared/api/mocks/Requisitions';
 import type { Requisition, RequisitionStatus } from '@/shared/types';
@@ -13,6 +13,8 @@ export function RequisitionPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState<'kanban' | 'list'>('kanban');
   const [selectedRequisition, setSelectedRequisition] = useState<Requisition | null>(null);
+  const [activeCategory, setActiveCategory] = useState<RequisitionStatus | 'All'>('All');
+  const [showFilterPanel, setShowFilterPanel] = useState(false);
 
   // Sync with dynamic API/mock data once loaded
   useEffect(() => {
@@ -26,18 +28,28 @@ export function RequisitionPage() {
   }>({});
 
   const filteredRequisitions = useMemo(() => {
-    return requisitions.filter((req) =>
-      [
-        req.id,
-        req.title,
-        req.department,
-        req.requester,
-      ]
-        .join(' ')
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    );
-  }, [requisitions, searchTerm]);
+    let filtered = requisitions;
+    if (activeCategory !== 'All') {
+      filtered = filtered.filter(req => req.status === activeCategory);
+    }
+    if (searchTerm) {
+      filtered = filtered.filter((req) =>
+        [req.id, req.title, req.department, req.requester]
+          .join(' ')
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      );
+    }
+    return filtered;
+  }, [requisitions, searchTerm, activeCategory]);
+
+  const statusCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    requisitionStatuses.forEach(status => {
+      counts[status] = requisitions.filter(r => r.status === status).length;
+    });
+    return counts;
+  }, [requisitions]);
 
   const handleStatusChange = (
     requisitionId: string,
@@ -46,119 +58,133 @@ export function RequisitionPage() {
     setRequisitions((prev) =>
       prev.map((req) =>
         req.id === requisitionId
-          ? {
-              ...req,
-              status: newStatus,
-            }
+          ? { ...req, status: newStatus }
           : req
       )
     );
   };
 
+  const handleCategoryClick = (category: RequisitionStatus | 'All') => {
+    setActiveCategory(category);
+  };
+
   return (
-  <div className="h-full flex flex-col bg-background">
-      {/* ATS Header */}
+    <div className="h-full flex flex-col bg-background">
+      {/* Header */}
+      <header className="border-b border-border/50 bg-card/60 backdrop-blur-md shadow-sm flex-shrink-0">
+        <div className="px-5 py-3">
+          <div className="flex items-center justify-between">
+            <h1
+              className="text-xl tracking-tight"
+              style={{
+                fontFamily: "'Fauna One', serif",
+                fontWeight: 100,
+                letterSpacing: '0.02em',
+              }}
+            >
+              Requisitions
+            </h1>
 
-<div className="px-6 pt-6 pb-4">
-  <div className="flex items-start justify-between gap-4">
+            <div className="flex items-center gap-2 flex-wrap">
+              {/* Search */}
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Search requisitions..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-8 pr-3 py-1.5 text-xs bg-muted/30 border border-border rounded-lg w-64 focus:outline-none focus:ring-1 focus:ring-foreground/20 focus:bg-card transition-all duration-200"
+                />
+              </div>
 
-    <div>
-      <h2 className="text-xl font-semibold tracking-tight mb-0.5">Requisitions</h2>
-      <p className="text-xs text-muted-foreground">
-        {requisitions.length} requisitions across active hiring workflows
-      </p>
+              {/* Filter */}
+              <button
+                onClick={() => setShowFilterPanel(!showFilterPanel)}
+                className={`p-1.5 rounded-lg transition-all duration-200 ${
+                  showFilterPanel ? 'bg-foreground/15 shadow-sm' : 'hover:bg-foreground/[0.07]'
+                }`}
+              >
+                <Filter className="w-4 h-4" />
+              </button>
 
-      <div className="flex items-center gap-2 mt-4 text-xs overflow-x-auto pb-1 scrollbar-thin">
+              {/* View Toggle */}
+              <div className="flex items-center gap-0.5 bg-muted/30 rounded-lg p-0.5">
+                <button
+                  onClick={() => setViewMode('kanban')}
+                  className={`p-1.5 rounded-md transition-all duration-200 ${
+                    viewMode === 'kanban' ? 'bg-card shadow-sm' : 'hover:bg-foreground/[0.06]'
+                  }`}
+                  title="Kanban View"
+                >
+                  <LayoutGrid className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`p-1.5 rounded-md transition-all duration-200 ${
+                    viewMode === 'list' ? 'bg-card shadow-sm' : 'hover:bg-foreground/[0.06]'
+                  }`}
+                  title="List View"
+                >
+                  <List className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          </div>
 
-        <span className="px-3 py-1 rounded-lg bg-foreground/15 text-foreground font-medium whitespace-nowrap">
-          All · {requisitions.length}
-        </span>
+          {/* Status Tabs */}
+          <div className="flex items-center gap-1 mt-3 overflow-x-auto pb-1 scrollbar-thin">
+            <button
+              onClick={() => handleCategoryClick('All')}
+              className={`px-3 py-1 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap ${
+                activeCategory === 'All'
+                  ? 'bg-foreground/15 text-foreground shadow-sm'
+                  : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              All · {requisitions.length}
+            </button>
+            {requisitionStatuses.map((status) => (
+              <button
+                key={status}
+                onClick={() => handleCategoryClick(status)}
+                className={`px-3 py-1 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap ${
+                  activeCategory === status
+                    ? 'bg-foreground/15 text-foreground shadow-sm'
+                    : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {status} · {statusCounts[status] || 0}
+              </button>
+            ))}
+          </div>
+        </div>
+      </header>
 
-        {requisitionStatuses.map((status) => (
-          <span
-            key={status}
-            className="px-3 py-1 rounded-lg text-muted-foreground font-medium whitespace-nowrap"
-          >
-            {status} · {
-              requisitions.filter(
-                (r) => r.status === status
-              ).length
-            }
-          </span>
-        ))}
-      </div>
-    </div>
-
-    <div className="flex items-center gap-3">
-
-      <div className="relative">
-        <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
-
-        <input
-          value={searchTerm}
-          onChange={(e) =>
-            setSearchTerm(e.target.value)
-          }
-          placeholder="Search requisitions..."
-          className="w-[260px] pl-10 pr-4 py-2 rounded-lg border border-border bg-card text-xs"
-        />
-      </div>
-
-      <button
-        onClick={() =>
-          setViewMode('kanban')
-        }
-        className={`p-2 rounded-lg ${
-          viewMode === 'kanban'
-            ? 'bg-muted'
-            : ''
-        }`}
-      >
-        <LayoutGrid className="w-4 h-4" />
-      </button>
-
-      <button
-        onClick={() =>
-          setViewMode('list')
-        }
-        className={`p-2 rounded-lg ${
-          viewMode === 'list'
-            ? 'bg-muted'
-            : ''
-        }`}
-      >
-        <List className="w-4 h-4" />
-      </button>
-    </div>
-  </div>
-</div>
-      {/* View */}
-
-      <div className="flex-1 min-h-0 px-6 pt-2 pb-8">
-        {viewMode === 'kanban' && (
-         <RequisitionKanbanBoard
-  requisitions={
-    filteredRequisitions
-  }
-  statuses={
-    requisitionStatuses
-  }
-  onStatusChange={
-    handleStatusChange
-  }
-  columnRefs={columnRefs}
-  onRequisitionClick={
-    setSelectedRequisition
-  }
-/>
-        )}
-
-        {viewMode === 'list' && (
-          <div className="p-6 border border-border rounded-lg">
-            Requisition List View
+      {/* Main Content */}
+      <main className="flex-1 overflow-auto">
+        {viewMode === 'kanban' ? (
+          <div className="p-5">
+            <RequisitionKanbanBoard
+              requisitions={filteredRequisitions}
+              statuses={requisitionStatuses}
+              onStatusChange={handleStatusChange}
+              columnRefs={columnRefs}
+              onRequisitionClick={setSelectedRequisition}
+            />
+          </div>
+        ) : (
+          <div className="p-5">
+            <RequisitionKanbanBoard
+              requisitions={filteredRequisitions}
+              statuses={requisitionStatuses}
+              onStatusChange={handleStatusChange}
+              columnRefs={columnRefs}
+              onRequisitionClick={setSelectedRequisition}
+            />
           </div>
         )}
-           </div>
+      </main>
 
       {selectedRequisition && (
         <RequisitionDetailModal
@@ -179,7 +205,6 @@ export function RequisitionPage() {
           }}
         />
       )}
-
     </div>
   );
 }

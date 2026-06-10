@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useAppStore } from '@/app/store';
 import { GuildLogo } from '@/shared/components/GuildLogo';
+import { ThemeToggle } from '@/shared/components/ui/ThemeToggle';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -214,43 +215,16 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               <h1
                 className="text-xl tracking-tight"
                 style={{
-                  fontFamily: 'Fauna One, serif',
+                  fontFamily: "'Fauna One', serif",
                   fontWeight: 100,
-                  letterSpacing: '0.02em',
+                  letterSpacing: '0.06em',
                 }}
               >
                 The Guild ATS
               </h1>
 
-              <div className="flex items-center gap-3">
-                {/* Theme Toggle Button */}
-                <button
-                  onClick={toggleTheme}
-                  className="p-1.5 rounded-lg hover:bg-foreground/[0.07] transition-all duration-200"
-                  aria-label="Toggle Theme"
-                >
-                  {theme === 'dark' ? (
-                    <svg
-                      className="w-4 h-4 text-foreground"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 7a5 5 0 100 10 5 5 0 000-10z" />
-                    </svg>
-                  ) : (
-                    <svg
-                      className="w-4 h-4 text-foreground"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
-                  )}
-                </button>
+              <div className="flex items-center gap-2">
+                <ThemeToggle theme={theme} setTheme={toggleTheme} />
               </div>
             </div>
           </header>

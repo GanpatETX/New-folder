@@ -34,79 +34,84 @@ export function InterviewsPage() {
   const totalCompleted = mockInterviews.filter(i => i.status === 'completed').length;
 
   return (
-    <div className="px-6 pt-6 pb-8 space-y-6">
+    <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight mb-1">Interviews</h2>
-          <p className="text-xs text-muted-foreground">
-            {totalScheduled} scheduled · {totalPending} pending feedback · {totalCompleted} completed
-          </p>
+      <header className="border-b border-border/50 bg-card/60 backdrop-blur-md shadow-sm flex-shrink-0">
+        <div className="px-5 py-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-semibold tracking-tight mb-1">Interviews</h2>
+              <p className="text-xs text-muted-foreground">
+                {totalScheduled} scheduled · {totalPending} pending feedback · {totalCompleted} completed
+              </p>
+            </div>
+
+            {/* Filters */}
+            <div className="flex items-center gap-2">
+              <select
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+                className="px-3 py-1.5 text-xs bg-muted/30 border border-border rounded-lg focus:outline-none focus:ring-1 focus:ring-foreground/20"
+              >
+                <option value="all">All Types</option>
+                <option value="screening">Screening</option>
+                <option value="fitment">Fitment</option>
+                <option value="technical">Technical</option>
+                <option value="ptc">PTC</option>
+                <option value="founders">Founders</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Status Tabs */}
+          <div className="flex items-center gap-2 mt-3">
+            <button
+              onClick={() => setFilter('all')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+                filter === 'all'
+                  ? 'bg-foreground/15 text-foreground shadow-sm'
+                  : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              All · {mockInterviews.length}
+            </button>
+            <button
+              onClick={() => setFilter('scheduled')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+                filter === 'scheduled'
+                  ? 'bg-foreground/15 text-foreground shadow-sm'
+                  : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Scheduled · {totalScheduled}
+            </button>
+            <button
+              onClick={() => setFilter('pending_feedback')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+                filter === 'pending_feedback'
+                  ? 'bg-foreground/15 text-foreground shadow-sm'
+                  : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Pending Feedback · {totalPending}
+            </button>
+            <button
+              onClick={() => setFilter('completed')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+                filter === 'completed'
+                  ? 'bg-foreground/15 text-foreground shadow-sm'
+                  : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Completed · {totalCompleted}
+            </button>
+          </div>
         </div>
+      </header>
 
-        {/* Filters */}
-        <div className="flex items-center gap-2">
-          <select
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
-            className="px-3 py-1.5 text-xs bg-muted/30 border border-border rounded-lg focus:outline-none focus:ring-1 focus:ring-foreground/20"
-          >
-            <option value="all">All Types</option>
-            <option value="screening">Screening</option>
-            <option value="fitment">Fitment</option>
-            <option value="technical">Technical</option>
-            <option value="ptc">PTC</option>
-            <option value="founders">Founders</option>
-          </select>
-        </div>
-      </div>
-
-      {/* Status Tabs */}
-      <div className="flex items-center gap-2">
-        <button
-          onClick={() => setFilter('all')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
-            filter === 'all'
-              ? 'bg-foreground/15 text-foreground shadow-sm'
-              : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
-          }`}
-        >
-          All · {mockInterviews.length}
-        </button>
-        <button
-          onClick={() => setFilter('scheduled')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
-            filter === 'scheduled'
-              ? 'bg-foreground/15 text-foreground shadow-sm'
-              : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
-          }`}
-        >
-          Scheduled · {totalScheduled}
-        </button>
-        <button
-          onClick={() => setFilter('pending_feedback')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
-            filter === 'pending_feedback'
-              ? 'bg-foreground/15 text-foreground shadow-sm'
-              : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
-          }`}
-        >
-          Pending Feedback · {totalPending}
-        </button>
-        <button
-          onClick={() => setFilter('completed')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
-            filter === 'completed'
-              ? 'bg-foreground/15 text-foreground shadow-sm'
-              : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
-          }`}
-        >
-          Completed · {totalCompleted}
-        </button>
-      </div>
-
-      {/* Main Content */}
-      <div className="grid grid-cols-1 gap-4">
+      {/* Content */}
+      <main className="flex-1 overflow-auto px-6 pt-6 pb-8">
+        <div className="grid grid-cols-1 gap-4">
         {filter === 'all' || filter === 'scheduled' ? (
           <div className="space-y-3">
             <h3 className="text-sm font-semibold flex items-center gap-2">
@@ -170,8 +175,9 @@ export function InterviewsPage() {
           </div>
         ) : null}
       </div>
-    </div>
-  );
+    </main>
+  </div>
+);
 }
 
 function InterviewCard({ interview }: { interview: Interview }) {

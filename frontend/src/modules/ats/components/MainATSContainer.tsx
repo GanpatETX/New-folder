@@ -120,7 +120,7 @@ export default function MainATSContainer() {
     return acc;
   }, {} as Record<CandidateStatus, number>);
 
-  const showPipelineHeader = activeTab === 'candidates';
+  const showPipelineHeader = activeTab === 'candidates' || activeTab === 'jobs';
 
   // Jobs Nesting renderer
   const renderJobsView = () => {

@@ -77,69 +77,31 @@ export function ReferralsPage() {
   }
 
   return (
-    <div className="px-6 pt-6 pb-8 space-y-6">
+    <div className="h-full flex flex-col bg-background">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight mb-1">Employee Referrals</h2>
-          <p className="text-xs text-muted-foreground">
-            {referralStats.totalReferrals} total referrals · {referralStats.conversionRate}% conversion rate
-          </p>
-        </div>
-        <button
-          onClick={() => setViewState('form')}
-          className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all duration-200 flex items-center gap-2 shadow-sm"
-        >
-          <UserPlus className="w-3.5 h-3.5" />
-          Submit Referral
-        </button>
-      </div>
-
-      {/* Stats Grid */}
-      <div className="grid grid-cols-4 gap-4">
-        <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer">
-          <div className="flex items-center justify-between mb-3">
-            <Users className="w-4 h-4 text-muted-foreground" />
-            <TrendingUp className="w-3 h-3 text-green-500" />
+      <header className="border-b border-border/50 bg-card/60 backdrop-blur-md shadow-sm flex-shrink-0">
+        <div className="px-5 py-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-semibold tracking-tight mb-1">Employee Referrals</h2>
+              <p className="text-xs text-muted-foreground">
+                {referralStats.totalReferrals} total referrals · {referralStats.conversionRate}% conversion rate
+              </p>
+            </div>
+            <button
+              onClick={() => setViewState('form')}
+              className="px-3 py-1.5 text-xs bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all duration-200 flex items-center gap-1.5 shadow-sm"
+            >
+              <UserPlus className="w-3.5 h-3.5" />
+              Submit Referral
+            </button>
           </div>
-          <div className="text-2xl font-bold mb-0.5">{referralStats.totalReferrals}</div>
-          <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Total Referrals</div>
-        </div>
 
-        <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer">
-          <div className="flex items-center justify-between mb-3">
-            <Clock className="w-4 h-4 text-muted-foreground" />
-          </div>
-          <div className="text-2xl font-bold mb-0.5">{referralStats.pending}</div>
-          <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Pending Review</div>
-        </div>
-
-        <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer">
-          <div className="flex items-center justify-between mb-3">
-            <Users className="w-4 h-4 text-muted-foreground" />
-          </div>
-          <div className="text-2xl font-bold mb-0.5">{referralStats.interviewed}</div>
-          <div className="text-[10px] text-muted-foreground uppercase tracking-wide">In Interviews</div>
-        </div>
-
-        <div className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors cursor-pointer">
-          <div className="flex items-center justify-between mb-3">
-            <CheckCircle2 className="w-4 h-4 text-green-500" />
-          </div>
-          <div className="text-2xl font-bold mb-0.5">{referralStats.hired}</div>
-          <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Successfully Hired</div>
-        </div>
-      </div>
-
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-3 gap-4">
-        {/* Referred Candidates */}
-        <div className="col-span-2 space-y-4">
-          {/* Filter Tabs */}
-          <div className="flex items-center gap-2">
+          {/* Status Tabs */}
+          <div className="flex items-center gap-1 mt-3 overflow-x-auto pb-1 scrollbar-thin">
             <button
               onClick={() => setFilter('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+              className={`px-3 py-1 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap ${
                 filter === 'all'
                   ? 'bg-foreground/15 text-foreground shadow-sm'
                   : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
@@ -149,7 +111,7 @@ export function ReferralsPage() {
             </button>
             <button
               onClick={() => setFilter('pending')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+              className={`px-3 py-1 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap ${
                 filter === 'pending'
                   ? 'bg-foreground/15 text-foreground shadow-sm'
                   : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
@@ -159,7 +121,7 @@ export function ReferralsPage() {
             </button>
             <button
               onClick={() => setFilter('interviewed')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+              className={`px-3 py-1 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap ${
                 filter === 'interviewed'
                   ? 'bg-foreground/15 text-foreground shadow-sm'
                   : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
@@ -169,7 +131,7 @@ export function ReferralsPage() {
             </button>
             <button
               onClick={() => setFilter('hired')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+              className={`px-3 py-1 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap ${
                 filter === 'hired'
                   ? 'bg-foreground/15 text-foreground shadow-sm'
                   : 'hover:bg-foreground/[0.07] text-muted-foreground hover:text-foreground'
@@ -178,8 +140,15 @@ export function ReferralsPage() {
               Hired · {referralStats.hired}
             </button>
           </div>
+        </div>
+      </header>
 
-          {/* Candidates List */}
+      {/* Content */}
+      <main className="flex-1 overflow-auto px-6 pt-6 pb-8">
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-3 gap-4">
+          {/* Referred Candidates */}
+          <div className="col-span-2 space-y-4">
           <div className="space-y-3">
             {filteredReferrals.map((candidate) => (
               <div
@@ -280,6 +249,7 @@ export function ReferralsPage() {
           </div>
         </div>
       </div>
+      </main>
     </div>
   );
 }
