@@ -97,7 +97,7 @@ export default function PurchaseModule() {
         {/* Topbar */}
 
         <header className="h-[88px] border-b border-border/50 px-8 flex items-center justify-between">
-          <h1 className="font-['Fauna_One'] text-[28px] tracking-[0.18em] text-foreground">
+          <h1 className="font-['Fauna_Thin'] text-[28px] tracking-[0.18em] text-foreground">
             The Guild Procurement
           </h1>
 

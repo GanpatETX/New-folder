@@ -48,7 +48,7 @@ export default function Login() {
         <h1
           className="text-[32px] text-white mb-2 leading-none"
           style={{
-            fontFamily: 'Fauna One, serif',
+            fontFamily: 'Fauna Thin, serif',
             fontWeight: 400,
             letterSpacing: '0.04em',
           }}

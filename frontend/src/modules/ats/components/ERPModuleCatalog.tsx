@@ -14,7 +14,7 @@ export function ERPModuleCatalog({ onModuleSelect }: ERPModuleCatalogProps) {
           <h1
             className="text-4xl text-zinc-100 mb-3 tracking-wide"
             style={{
-              fontFamily: 'Fauna One, serif',
+              fontFamily: 'Fauna Thin, serif',
               fontWeight: 300,
               letterSpacing: '0.06em',
             }}

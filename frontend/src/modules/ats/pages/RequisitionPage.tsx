@@ -77,7 +77,7 @@ export function RequisitionPage() {
             <h1
               className="text-xl tracking-tight"
               style={{
-                fontFamily: "'Fauna One', serif",
+                fontFamily: "'Fauna Thin', serif",
                 fontWeight: 100,
                 letterSpacing: '0.02em',
               }}
