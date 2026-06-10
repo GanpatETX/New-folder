@@ -14,7 +14,7 @@ export async function fetchCandidates(): Promise<Candidate[]> {
     await delay(300);
     return localCandidates;
   }
-  const response = await apiClient.get('/entity/candidates/records');
+  const response = await apiClient.get('/candidates?skip=0&limit=100');
   // Format based on standard API: { data: [...], total: N }
   return response.data.data;
 }
