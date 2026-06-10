@@ -34,15 +34,4 @@ export default defineConfig({
     include: ['react', 'react-dom', '@tanstack/react-query'],
   },
   assetsInclude: ['**/*.svg', '**/*.csv'],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./tests/setup/setupTests.ts'],
-    include: ['tests/**/*.test.{ts,tsx}'],
-    environmentOptions: {
-      jsdom: {
-        resources: 'usable',
-      },
-    },
-  },
 })
